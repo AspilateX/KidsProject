@@ -2,8 +2,9 @@
 using System.Data;
 using Mono.Data.Sqlite;
 using System.IO;
+using System.Threading.Tasks;
 
-    static class MyDataBase
+static class MyDataBase
     {
         private const string fileName = "energy.db";
         private static string DBPath;
@@ -37,41 +38,41 @@ using System.IO;
             File.WriteAllBytes(toPath, reader.bytes);
         }
         // Подключение к БД
-        private static void OpenConnection()
+        private static async Task OpenConnection()
         {
             connection = new SqliteConnection("Data Source=" + DBPath);
             command = new SqliteCommand(connection);
-            connection.Open();
+            await connection.OpenAsync();
             //Debug.Log("!");
         }
 
         // Закрытие поключения
-        public static void CloseConnection()
+        public static async Task CloseConnection()
         {
-            connection.Close();
+            await connection.CloseAsync();
             command.Dispose();
         }
 
         //Метод для передачи запроса, возвращает строку
-        public static string ExecuteQueryWithAnswer(string query)
+        public static async Task<string> ExecuteQueryWithAnswer(string query)
         {
-            OpenConnection();
+            await OpenConnection();
             command.CommandText = query;
-            var answer = command.ExecuteScalar();
-            CloseConnection();
+            var answer = await command.ExecuteScalarAsync();
+            await CloseConnection();
             if (answer != null) return answer.ToString();
             else return null;
         }
 
         // Метод для передачи запроса, возвращает таблицу
-        public static DataTable GetTable(string query)
+        public static async Task<DataTable> GetTable(string query)
         {
-            OpenConnection();
+            await OpenConnection();
             SqliteDataAdapter adapter = new SqliteDataAdapter(query, connection);
             DataSet DS = new DataSet();
             adapter.Fill(DS);
             adapter.Dispose();
-            CloseConnection();
+            await CloseConnection();
             return DS.Tables[0];
         }
     }

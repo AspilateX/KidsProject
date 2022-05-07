@@ -27,7 +27,7 @@ public class PopupList : MonoBehaviour
 	}
 
 
-	void Awake()
+	async void Awake()
 	{
 		delta = element.sizeDelta;
 		scrollRect.gameObject.SetActive(true);
@@ -35,7 +35,7 @@ public class PopupList : MonoBehaviour
 		
 		for (int i = 1; i < 86; ++i)
 		{
-			list[i - 1] = MyDataBase.ExecuteQueryWithAnswer($"SELECT Name_Geo FROM Geo WHERE Id_Geo = {i}");
+			list[i - 1] = await MyDataBase.ExecuteQueryWithAnswer($"SELECT Name_Geo FROM Geo WHERE Id_Geo = {i}");
 		}
 	}
 

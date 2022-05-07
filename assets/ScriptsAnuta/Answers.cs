@@ -10,6 +10,6 @@ public class Answers : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        TextLabel.text = MyDataBase.ExecuteQueryWithAnswer($"SELECT Name_Geo FROM Geo WHERE id_Geo = 74;")+' ';
+        //TextLabel.text = MyDataBase.ExecuteQueryWithAnswer($"SELECT Name_Geo FROM Geo WHERE id_Geo = 74;")+' ';
     }
 }
