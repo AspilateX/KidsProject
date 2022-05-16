@@ -48,11 +48,11 @@ public class CameraController : MonoBehaviour
                     }
                     case CameraRotationMode.Orbital:
                     {
-                        transform.RotateAround(_pivot, Vector3.up, rotationSensetivity * Input.GetAxis("Mouse X"));
+                        transform.RotateAround(_pivot, Vector3.up, rotationSensetivity * Input.GetAxis("Mouse X"));     
+                        transform.LookAt(_pivot, Vector3.up);
                         break;
                     }
                 }
-
             }
         }
         //Zooming
@@ -62,14 +62,18 @@ public class CameraController : MonoBehaviour
                 Input.GetAxis("Mouse ScrollWheel") < 0 && transform.position.y < maxAltitude)
             {
                 Vector3 newPosition = transform.position + Input.GetAxis("Mouse ScrollWheel") * scrollSensetivity * transform.forward;
-                MoveTo(newPosition);
+                transform.DOMove(newPosition, 3f).SetSpeedBased().SetEase(Ease.OutSine);
             }
         }
     }
 
     public void MoveTo(Vector3 position)
     {
-        transform.DOMove(position, 3f).SetSpeedBased().SetEase(Ease.OutSine);
+        transform.DOMove(position, 1f).SetEase(Ease.OutSine);
+    }
+    public void LookAt(Vector3 towards)
+    {
+        transform.LookAt(towards, Vector3.up);
     }
     public void SetPivotPoint(Vector3 pivot)
     {

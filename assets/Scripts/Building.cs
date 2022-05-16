@@ -8,7 +8,7 @@ public class Building : MonoBehaviour
 
     public Vector2Int Size = Vector2Int.one;
     private Camera mainCamera;
-    public BildingsGrid fly;
+    public BuildingsGrid fly;
 
     private AudioSource _audioSource;
 

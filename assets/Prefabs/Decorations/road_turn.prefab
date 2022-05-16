@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3694271885118355194}
   - component: {fileID: 354494787811686751}
   - component: {fileID: 2526409888417893781}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,8 +95,7 @@ GameObject:
   - component: {fileID: 2829022668150497957}
   - component: {fileID: 1554244671981615104}
   - component: {fileID: 4561291460503163806}
-  - component: {fileID: 2497279489967191659}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: road_turn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -243,15 +242,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.5, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2497279489967191659
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6024882630760184437}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 767c8e16d5669af40885926d415f7995, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

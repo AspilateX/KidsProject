@@ -2,8 +2,13 @@
 
 public class GamemodeChanger : MonoBehaviour
 {
+    public static GamemodeChanger Current;
     [SerializeField]
     private CameraController _cameraController;
+    [SerializeField]
+    private MenuConfigurator _menuConfigurator;
+    [SerializeField]
+    private MenuAnimator _menuAnimator;
 
     private static BuildingPowerConfiguration _lastEditedConfig;
     private void OnGamemodeChanged(GamemodeType type)
@@ -38,15 +43,25 @@ public class GamemodeChanger : MonoBehaviour
         }
     }
 
-    public static void SetPowerConfigurationMode(BuildingPowerConfiguration config)
+    public void SetPowerConfigurationMode(BuildingPowerConfiguration config)
     {
         _lastEditedConfig = config;
+        _menuAnimator.HideBottomMenu(0.25f, () =>
+        {
+            _menuConfigurator.SetPowerConfigurationUIFor(config);
+            _menuAnimator.ShowBottomMenu(0.25f);
+        });
         Gamemode.ChangeGamemode(GamemodeType.PowerConfiguration);
     }
 
     public static void SetBuildingMode()
     {
         Gamemode.ChangeGamemode(GamemodeType.Building);
+    }
+
+    private void Awake()
+    {
+        Current = this;
     }
 
     private void OnEnable()

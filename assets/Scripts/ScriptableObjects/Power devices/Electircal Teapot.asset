@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ccd180b3ab66cb49b6c5ef91cc48258, type: 3}
+  m_Name: Electircal Teapot
+  m_EditorClassIdentifier: 
+  Name: "\u042D\u043B\u0435\u043A\u0442\u0440\u0438\u0447\u0435\u0441\u043A\u0438\u0439
+    \u0447\u0430\u0439\u043D\u0438\u043A"
+  Description: 
+  Icon: {fileID: 21300000, guid: c95b116cb23ee614da093cc9e678e61f, type: 3}
+  Consumption: 1.5

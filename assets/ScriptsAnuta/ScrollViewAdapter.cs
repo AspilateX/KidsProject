@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,24 +8,12 @@ using UnityEngine.UIElements;
 
 public class ScrollViewAdapter : MonoBehaviour
 {
-    public RectTransform prefab;
-    public RectTransform content;
-    public GameObject con;
-    public Text chose;
     private int region;
     public static float insolation = 0.0f;
 
     [Space]
     [SerializeField]
-    private UIDocument UIDocument;
-
-    private VisualElement _UIRoot;
-    private DropdownField _dropDownField;
-    private void Awake()
-    {
-        _UIRoot = UIDocument.rootVisualElement;
-        _dropDownField = _UIRoot.Q<DropdownField>("TopDropdown");
-    }
+    private UIRegionsList _uIRegionsList;
     private void Start()
     {
         UpdateItems();
@@ -32,13 +21,12 @@ public class ScrollViewAdapter : MonoBehaviour
     public void UpdateItems()
     {
         int modelsCount = 85;
-        con.SetActive(true);
         GetItems(modelsCount, results => OnRecievedModels(results));
     }
 
     void OnRecievedModels(TestItemModel[] models)
     {
-        _dropDownField.choices = models.Select(x => x.title).ToList();
+        _uIRegionsList.UpdateList(models.Select(x => x.title).ToList());
     }
 
     async void InitializeItemView(GameObject viewGameObject, TestItemModel model)
@@ -52,9 +40,6 @@ public class ScrollViewAdapter : MonoBehaviour
                 Debug.Log(view.titleText.text + " is clicked!");
                 region = int.Parse(await MyDataBase.ExecuteQueryWithAnswer($"SELECT Id_Geo FROM Geo WHERE Region_Geo = '{view.titleText.text}';"));
                 insolation = float.Parse(await MyDataBase.ExecuteQueryWithAnswer($"SELECT AnnualAverage FROM Insolation WHERE Id_Insolation = '{region}';"));
-                Debug.Log(insolation);
-                chose.text = view.titleText.text;
-                con.SetActive(false);
             }
             );
     }

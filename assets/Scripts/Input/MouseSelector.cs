@@ -1,9 +1,10 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MouseSelector : MonoBehaviour
 {
-    public static event Action<BuildingPowerConfiguration> PowerConfigurationSelected;
+    public static event Action<GameObject> Selected;
 
     [SerializeField]
     private Camera _camera;
@@ -20,24 +21,16 @@ public class MouseSelector : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(1))
         {
             RaycastHit hit;
             Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray.origin, ray.direction, out hit, _maxCastDistance, _selectableLayers, QueryTriggerInteraction.Collide))
             {
-                if (hit.collider.TryGetComponent(out BuildingPowerConfiguration PowerSettingsComponent))
-                {
-                    PowerConfigurationSelected?.Invoke(PowerSettingsComponent);
-                    return;
-                }
+                if (!EventSystem.current.IsPointerOverGameObject())
+                    Selected?.Invoke(hit.collider.gameObject);
             }
         }
-    }
-
-    private void OnEnable()
-    {
-        PowerConfigurationSelected += (BuildingPowerConfiguration config) => Gamemode.ChangeGamemode(GamemodeType.PowerConfiguration);
     }
 }

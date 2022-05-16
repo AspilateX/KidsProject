@@ -10,7 +10,7 @@ public class BuildingPowerConfiguration : MonoBehaviour
         get
         {
             return PowerDevices
-                .Select(i => i.Key.PowerConsumption * i.Value)
+                .Select(i => i.Key.Consumption * i.Value)
                 .Sum();
         }
     }
@@ -19,33 +19,15 @@ public class BuildingPowerConfiguration : MonoBehaviour
         if (!PowerDevices.ContainsKey(device))
             PowerDevices.Add(device, 0);
 
-        PowerDevices[device] += amount;
+        PowerDevices[device] = amount;
+        Debug.Log("Set " + PowerDevices[device] + " to " + device.name + " in " + this.name);
     }
 
-    public void RemovePowerDevice(PowerDevice device, int amount)
+    public void RemovePowerDevice(PowerDevice device)
     {
         if (PowerDevices.ContainsKey(device))
         {
-            PowerDevices[device] -= amount;
-            if (PowerDevices[device] <= 0)
-                PowerDevices.Remove(device);
+            PowerDevices.Remove(device);
         }
     }
-
-    private void Awake()
-    {
-        AddPowerDevice(new PowerDevice(2.5f), 3);
-        AddPowerDevice(new PowerDevice(-6f), 2);
-    }
-}
-
-public class PowerDevice
-{
-    public PowerDevice(float powerConsumption)
-    {
-        PowerConsumption = powerConsumption;
-    }
-
-    // ѕотребление прибора в к¬т ч (отрицательное - прибор генерирует электричество)
-    public float PowerConsumption { get; private set; } = 0f;
 }

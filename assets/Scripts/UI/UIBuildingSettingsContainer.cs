@@ -2,7 +2,6 @@
 using TMPro;
 using UnityEngine.UI;
 using System;
-
 public class UIBuildingSettingsContainer : UIContainer<BuildingRequest>
 {
     [SerializeField]
@@ -46,7 +45,7 @@ public class UIBuildingSettingsContainer : UIContainer<BuildingRequest>
     private void RequestPowerConfigurationMode()
     {
         if (Content.Target.TryGetComponent(out BuildingPowerConfiguration config))
-            GamemodeChanger.SetPowerConfigurationMode(config);
+            GamemodeChanger.Current.SetPowerConfigurationMode(config);
     }
     private void RequestCopyConfiguration()
     {

@@ -16,12 +16,12 @@ public class UIBuildingsList : UIList<BuildingData>
     }
     private void OnDisable()
     {
-        UpdateList(_content);
+        UpdateList(new List<BuildingData>());
         for (int i = 0; i < Containers.Count; i++)
             (Containers[i] as BuildingUIContainer).Clicked -= InvokeChoose;
     }
     private void InvokeChoose(BuildingData content)
     {
-        BuildingChoosen?.Invoke(content);
+        BuildingEventsHolder.ChooseBuildingPrefab(content.Prefab);
     }
 }
