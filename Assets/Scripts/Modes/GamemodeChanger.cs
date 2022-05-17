@@ -9,6 +9,8 @@ public class GamemodeChanger : MonoBehaviour
     private MenuConfigurator _menuConfigurator;
     [SerializeField]
     private MenuAnimator _menuAnimator;
+    [SerializeField]
+    private BuildingsGrid _buildingsGrid;
 
     private static BuildingPowerConfiguration _lastEditedConfig;
     private void OnGamemodeChanged(GamemodeType type)
@@ -51,11 +53,17 @@ public class GamemodeChanger : MonoBehaviour
             _menuConfigurator.SetPowerConfigurationUIFor(config);
             _menuAnimator.ShowBottomMenu(0.25f);
         });
+        _buildingsGrid.RemoveBuilding(_buildingsGrid.CurrentBuildingInstance);
         Gamemode.ChangeGamemode(GamemodeType.PowerConfiguration);
     }
 
-    public static void SetBuildingMode()
+    public void SetBuildingMode()
     {
+        _menuAnimator.HideBottomMenu(0.25f, () =>
+        {
+            _menuConfigurator.SetBuildingUI();
+            _menuAnimator.ShowBottomMenu(0.25f);
+        });
         Gamemode.ChangeGamemode(GamemodeType.Building);
     }
 

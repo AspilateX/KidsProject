@@ -18,7 +18,7 @@ public class BuildingsGrid : MonoBehaviour
     private Building[,] grid;
    // public bool [,] gridControl;
 
-    private Building buildingInstance;
+    public Building CurrentBuildingInstance { get; private set; }
     
     private Camera mainCamera;
 
@@ -54,17 +54,17 @@ public class BuildingsGrid : MonoBehaviour
     public void PlacingBuilding(Building buildPrefab)
     {
         _lastPrefab = buildPrefab;
-        if (buildingInstance != null)
-            Destroy(buildingInstance.gameObject);
+        if (CurrentBuildingInstance != null)
+            Destroy(CurrentBuildingInstance.gameObject);
 
-        buildingInstance = Instantiate(buildPrefab);
-        buildingInstance.gameObject.layer = LayerMask.NameToLayer("Default");
+        CurrentBuildingInstance = Instantiate(buildPrefab);
+        CurrentBuildingInstance.gameObject.layer = LayerMask.NameToLayer("Default");
         RotateBuilding();
     }
 
     private void Update()
     {
-       SetGridPosition(buildingInstance);
+       SetGridPosition(CurrentBuildingInstance);
     }
 
     public void SetGridPosition(Building building)
@@ -122,12 +122,12 @@ public class BuildingsGrid : MonoBehaviour
     }
     private void ApplyBuildingAtPosition(int placeX, int placeY)
     {
-        for (int x=0; x< buildingInstance.Size.x; x++)
+        for (int x=0; x< CurrentBuildingInstance.Size.x; x++)
         {
-        for (int y = 0; y< buildingInstance.Size.y; y++)
+        for (int y = 0; y< CurrentBuildingInstance.Size.y; y++)
             {
 
-               grid[placeX + x, placeY + y] = buildingInstance;
+               grid[placeX + x, placeY + y] = CurrentBuildingInstance;
                 //gridControl[placeX + x, placeY + y]= true;
                
             }
@@ -135,14 +135,14 @@ public class BuildingsGrid : MonoBehaviour
 
         if (_onPlacePS != null)
         {
-            _onPlacePS.transform.position = buildingInstance.transform.position;
+            _onPlacePS.transform.position = CurrentBuildingInstance.transform.position;
             _onPlacePS.Play();
         }
 
-        buildingInstance.SetNormal();
-        buildingInstance.ApplyPlacement();
-        buildingInstance.gameObject.layer = LayerMask.NameToLayer("Selectable");
-        buildingInstance = null;
+        CurrentBuildingInstance.SetNormal();
+        CurrentBuildingInstance.ApplyPlacement();
+        CurrentBuildingInstance.gameObject.layer = LayerMask.NameToLayer("Selectable");
+        CurrentBuildingInstance = null;
 
         if (_lastPrefab != null)
             PlacingBuilding(_lastPrefab);
@@ -151,11 +151,14 @@ public class BuildingsGrid : MonoBehaviour
 
     private void RotateBuilding()
     {
-        buildingInstance.Rotate(_currentRotation);
+        CurrentBuildingInstance.Rotate(_currentRotation);
     }
 
     public void RemoveBuilding(Building building)
     {
+        if (building == null) 
+            return;
+
         Destroy(building.gameObject);
         OnBuildingRemoved?.Invoke();
     }

@@ -6,5 +6,7 @@ public class PowerDevice : ScriptableObject
     public string Name;
     public string Description;
     public Sprite Icon;
+    public Color CardColor;
     public float Consumption;
+    public float AverageUsageTime = 1;
 }

@@ -4,18 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 public class CountEnergy : MonoBehaviour
 {
-    // Start is called before the first frame update
     public float[] production;
     public static float multiProductionAllHouses = 0.0f;
     public Text test;
     public Text balans;
-    public GameObject[] objCubs;
-    void Start()
-    {
 
-    }
-
-    // Update is called once per frame
     void Update()
     {
         MultiProduction();
@@ -27,7 +20,7 @@ public class CountEnergy : MonoBehaviour
     {
         float multi = 0;
        
-        multi += FindObjectOfType<Extract_GetInfo>().GetComponent<Extract_GetInfo>().multiProduction;
+        //multi += FindObjectOfType<Extract_GetInfo>().multiProduction;
        
         multiProductionAllHouses = multi;
     }

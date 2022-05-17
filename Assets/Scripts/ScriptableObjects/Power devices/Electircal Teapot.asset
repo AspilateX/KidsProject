@@ -16,4 +16,6 @@ MonoBehaviour:
     \u0447\u0430\u0439\u043D\u0438\u043A"
   Description: 
   Icon: {fileID: 21300000, guid: c95b116cb23ee614da093cc9e678e61f, type: 3}
+  CardColor: {r: 1, g: 0.2783019, b: 0.2783019, a: 1}
   Consumption: 1.5
+  AverageUsageTime: 0.5

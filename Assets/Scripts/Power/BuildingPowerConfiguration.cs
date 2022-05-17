@@ -1,33 +1,53 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class BuildingPowerConfiguration : MonoBehaviour
 {
-    public Dictionary<PowerDevice, int> PowerDevices { get; private set; } = new Dictionary<PowerDevice, int>();
+    public Dictionary<PowerDevice, PowerDeviceData> PowerDevicesData { get; private set; } = new Dictionary<PowerDevice, PowerDeviceData>();
     public float TotalConsumption 
     { 
         get
         {
-            return PowerDevices
-                .Select(i => i.Key.Consumption * i.Value)
+            return PowerDevicesData
+                .Select(i => i.Key.Consumption * i.Value.Amount * i.Value.UsageTime)
                 .Sum();
         }
     }
-    public void AddPowerDevice(PowerDevice device, int amount)
+    public void SetPowerDevice(PowerDevice device, PowerDeviceData data)
     {
-        if (!PowerDevices.ContainsKey(device))
-            PowerDevices.Add(device, 0);
+        if (!PowerDevicesData.ContainsKey(device))
+            PowerDevicesData.Add(device, data);
 
-        PowerDevices[device] = amount;
-        Debug.Log("Set " + PowerDevices[device] + " to " + device.name + " in " + this.name);
+        PowerDevicesData[device] = data;
+        Debug.Log("Set " + PowerDevicesData[device].UsageTime + " to " + device.name + " in " + this.name);
     }
 
     public void RemovePowerDevice(PowerDevice device)
     {
-        if (PowerDevices.ContainsKey(device))
+        if (PowerDevicesData.ContainsKey(device))
         {
-            PowerDevices.Remove(device);
+            PowerDevicesData.Remove(device);
         }
+    }
+
+    public PowerDeviceData GetPowerDeviceData(PowerDevice device)
+    {
+        if (PowerDevicesData.ContainsKey(device))
+            return PowerDevicesData[device];
+        return new PowerDeviceData(0,device.AverageUsageTime);
+    }
+}
+
+public struct PowerDeviceData
+{
+    public int Amount;
+    public float UsageTime;
+
+    public PowerDeviceData(int amount, float usageTime)
+    {
+        Amount = amount;
+        UsageTime = usageTime;
     }
 }
