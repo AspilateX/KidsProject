@@ -6,8 +6,6 @@ TagManager:
   tags:
   - Plane
   - Cube
-  - Not_Home
-  - IF_home
   layers:
   - Default
   - TransparentFX

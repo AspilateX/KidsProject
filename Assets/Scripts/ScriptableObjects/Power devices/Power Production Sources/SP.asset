@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 853e65968b0637d498d998c94f6f9b5b, type: 3}
+  m_Name: SP
+  m_EditorClassIdentifier: Assembly-CSharp::PowerProductionSource
+  Name: "\u0421\u043E\u043B\u043D\u0435\u0447\u043D\u0430\u044F \u043F\u0430\u043D\u0435\u043B\u044C"
+  Description: 
+  Icon: {fileID: 21300000, guid: 3abe9ca87b3bc244182d2590a6667861, type: 3}
+  CardColor: {r: 0.20392157, g: 0.49803922, b: 1, a: 1}
+  Price: 14600
+  Production: 0.45

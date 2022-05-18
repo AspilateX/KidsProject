@@ -18,6 +18,8 @@ public class PowerDeviceUIContainer : UIContainer<PowerDevice>
     private Image _iconImage;
     [SerializeField]
     private Image _backgroundImage;
+    [SerializeField]
+    private GameObject _hoursInputFieldContainer;
 
     public override void Initialize(PowerDevice content)
     {
@@ -25,7 +27,8 @@ public class PowerDeviceUIContainer : UIContainer<PowerDevice>
         _nameText.text = content.Name;
         _iconImage.sprite = content.Icon;
         _backgroundImage.color = content.CardColor;
-        
+        if (content is PowerProductionSource)
+            _hoursInputFieldContainer.SetActive(false);
     }
 
     public void SetAmountField(int newValue)
@@ -55,14 +58,14 @@ public class PowerDeviceUIContainer : UIContainer<PowerDevice>
     {
         input = string.Concat(input.Where(char.IsDigit));
         if (int.TryParse(input, out int result))
-            return Mathf.Max(0, result);
+            return Mathf.Clamp(result, 0, 100);
         return 0;
     }
     private float GetValidatedHours(string input)
     {
         input = Regex.Replace(input, "\\.? ч.", "");
         if (float.TryParse(input, out float result))
-            return Mathf.Max(0, result);
+            return Mathf.Clamp((float)Math.Round(result, 1), 0f, 24f);
         return 0;
     }
 

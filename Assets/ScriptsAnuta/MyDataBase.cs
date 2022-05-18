@@ -17,21 +17,25 @@ static class MyDataBase
 
         }
 
-        //TODO: При билде будут ошибки, как-то связанные с #ifdef UNITY_EDITOR и Scriptable Object
         private static string GetDatabasePath()
-            {
-#if UNITY_EDITOR
-            return Path.Combine(Application.streamingAssetsPath, fileName);
-#endif
-#if UNITY_STANDALONE
-            string filePath = Path.Combine(Application.dataPath, fileName);
-            if (!File.Exists(filePath)) 
-                UnpackDatabase(filePath);     
-            return filePath;
-#endif
-        }
+        {
+        string filePath = Path.Combine(Application.dataPath, fileName);
+        if (!File.Exists(filePath))
+            UnpackDatabase(filePath);
+        return filePath;
 
-        private static void UnpackDatabase(string toPath)
+        //#if UNITY_EDITOR
+        //            return Path.Combine(Application.streamingAssetsPath, fileName);
+        //#endif
+        //#if UNITY_STANDALONE
+        //            string filePath = Path.Combine(Application.dataPath, fileName);
+        //            if (!File.Exists(filePath)) 
+        //                UnpackDatabase(filePath);     
+        //            return filePath;
+        //#endif
+    }
+
+    private static void UnpackDatabase(string toPath)
         {
             string fromPath = Path.Combine(Application.streamingAssetsPath, fileName);
             WWW reader = new WWW(fromPath);

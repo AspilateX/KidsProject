@@ -15,9 +15,10 @@ public class UIPowerDevicesList : UIList<PowerDevice>
     private void OnEnable()
     {
         if (_sortByConsumption)
-           _content = _content.OrderBy(x => x.Consumption).ToList();
+           _content = _content.OrderBy(x => x.GetType().Name).Reverse().ToList();
 
         UpdateList(_content);
+
         for (int i = 0; i < Containers.Count; i++)
         {
             (Containers[i] as PowerDeviceUIContainer).DeviceDataChanged += ApplyToConfig;

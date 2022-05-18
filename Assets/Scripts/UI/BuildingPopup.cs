@@ -9,6 +9,13 @@ public class BuildingPopup : MonoBehaviour
 
     private GameObject _currentPopup;
 
+    public static BuildingPopup Current;
+
+    private void Awake()
+    {
+        Current = this;
+    }
+
     private void OnEnable()
     {
         MouseSelector.Selected += (GameObject go) =>

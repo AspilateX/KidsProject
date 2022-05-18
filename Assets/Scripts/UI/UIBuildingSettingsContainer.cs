@@ -12,6 +12,9 @@ public class UIBuildingSettingsContainer : UIContainer<BuildingRequest>
     {
         base.Initialize(content);
 
+        if (_button == null)
+            return;
+
         string name = "";
 
         switch(content.RequestType)
@@ -28,14 +31,28 @@ public class UIBuildingSettingsContainer : UIContainer<BuildingRequest>
         {
             case BuildingRequestType.ChangeConfig:
                 {
-                    _button?.onClick.AddListener(RequestPowerConfigurationMode);
+                    _button.onClick.AddListener(RequestPowerConfigurationMode);
                     break;
                 }
-            case BuildingRequestType.CopyConfig: break;
-            case BuildingRequestType.PasteConfig: break;
+            case BuildingRequestType.CopyConfig:
+                {
+                    _button.onClick.AddListener(RequestCopyConfiguration);
+                    break;
+                } 
+            case BuildingRequestType.PasteConfig:
+                {
+                    if (BuildingConfigurationBuffer.Buffer == null)
+                        _button.enabled = false;
+                    else
+                    {
+                        _button.enabled = true;
+                        _button.onClick.AddListener(RequestPasteConfiguration);
+                    }
+                    break;
+                }
             case BuildingRequestType.RemoveBuilding:
                 {
-                    _button?.onClick.AddListener(RequestDelete);
+                    _button.onClick.AddListener(RequestDelete);
                     break;
                 }
             default: break;
@@ -46,18 +63,28 @@ public class UIBuildingSettingsContainer : UIContainer<BuildingRequest>
     {
         if (Content.Target.TryGetComponent(out BuildingPowerConfiguration config))
             GamemodeChanger.Current.SetPowerConfigurationMode(config);
+
+        BuildingPopup.Current.Hide();
     }
     private void RequestCopyConfiguration()
     {
+        if (Content.Target.TryGetComponent(out BuildingPowerConfiguration config))
+            BuildingConfigurationBuffer.Buffer = config;
 
+        BuildingPopup.Current.Hide();
     }
     private void RequestPasteConfiguration()
     {
+        if (Content.Target.TryGetComponent(out BuildingPowerConfiguration config))
+            config.PowerDevicesData = BuildingConfigurationBuffer.Buffer.PowerDevicesData;
+
+        BuildingPopup.Current.Hide();
 
     }
     private void RequestDelete()
     {
         BuildingEventsHolder.InvokeBuildingRemove(Content.Target);
+        BuildingPopup.Current.Hide();
     }
 }
 
