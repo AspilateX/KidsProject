@@ -11,6 +11,7 @@ public class GlobalConfigurationUI : MonoBehaviour
 
     public void UpdateText()
     {
+        _text.alignment = TMPro.TextAlignmentOptions.Center;
         StringBuilder stringBuilder = new StringBuilder();
 
         float powerDiffence = 0f;
@@ -26,39 +27,82 @@ public class GlobalConfigurationUI : MonoBehaviour
             totalAnnualConsumption += _configs[i].TotalAnnualConsumption;
         }
 
-        stringBuilder.Append($"Солнечных часов за год в выбранном регионе: <color=#f39c12><b>{UIRegionsList.CurrentRegionSunnyHours}</b></color>");
+        stringBuilder.Append($"Солнечных часов за год в выбранном регионе: \n\n<size=+8><color=#f39c12><b>{UIRegionsList.CurrentRegionSunnyHours}</b></color></size>\n");
 
         if (powerDiffence > 0)
         {
-            stringBuilder.Append("\nГодовая выработка: ");
-            stringBuilder.Append("<color=#388e3c><b>");
-            stringBuilder.Append("+");
-            stringBuilder.Append(System.Math.Round(Mathf.Abs(powerDiffence * 0.001f), 2));
-            stringBuilder.Append("</b></color>");
+            stringBuilder.Append($"\nГодовая <color=#388e3c><b>выработка</b></color> всего поселения: \n\n<size=+8><color=#388e3c><b>+{System.Math.Round(Mathf.Abs(powerDiffence * 0.001f), 2)}</b></color></size>");
         }
         else
         {
-            stringBuilder.Append("\nГодовое потребление: ");
-            stringBuilder.Append("<color=#d32f2f><b>");
-            stringBuilder.Append(System.Math.Round(powerDiffence * 0.001f, 2));
-            stringBuilder.Append("</b></color>");
+            stringBuilder.Append($"\nГодовое <color=#d32f2f><b>потребление</b></color> всего поселения: \n\n<size=+8><color=#d32f2f><b>{System.Math.Round(powerDiffence * 0.001f, 2)}</b></color></size>");
         }
 
         stringBuilder.Append($" мВт (<color=#388e3c>+{System.Math.Round(totalAnnualProduction * 0.001f, 2)}</color>/<color=#d32f2f>-{System.Math.Round(totalAnnualConsumption * 0.001f, 2)}</color>)");
 
-        stringBuilder.Append($"\n\n<color=#d32f2f><b>ИТОГО (НА ВСЕ ДОМА) {totalPrice} руб.</b></color>");
+        stringBuilder.Append($"\n\n<size=+2><color=#d32f2f><b>Стоимость проекта {System.Math.Round(totalPrice, 2)} руб.</b></color></size>");
 
         _text.text = stringBuilder.ToString();
     }
 
+    public void Add(BuildingPowerConfiguration config)
+    {
+        _configs.Add(config);
+        config.DataChanged += (PowerDevice device, PowerDeviceData data) => UpdateText();
+    }
+
+    public void Remove(BuildingPowerConfiguration config)
+    {
+        config.DataChanged -= (PowerDevice device, PowerDeviceData data) => UpdateText();
+        _configs.Remove(config);
+    }
+
     private void OnEnable()
     {
+        BuildingConfigurationBuffer.OnBufferChanged += (BuildingPowerConfiguration buffer) =>
+        {
+            UpdateText();
+        };
+        BuildingsGrid.OnBuildingPlaced += (Building building) =>
+        {
+            if(building.TryGetComponent(out BuildingPowerConfiguration config))
+            {
+                Add(config);
+                UpdateText();
+            }
+        };
+        BuildingsGrid.OnBuildingRemoved += (Building building) =>
+        {
+            if (building.TryGetComponent(out BuildingPowerConfiguration config))
+            {
+                Remove(config);
+                UpdateText();
+            }
+        };
         for (int i =0; i < _configs.Count; i++)
             _configs[i].DataChanged += (PowerDevice device, PowerDeviceData data) => UpdateText();
     }
 
     private void OnDisable()
     {
+        BuildingConfigurationBuffer.OnBufferChanged -= (BuildingPowerConfiguration buffer) =>
+        {
+            UpdateText();
+        };
+        BuildingsGrid.OnBuildingPlaced -= (Building building) =>
+        {
+            if (building.TryGetComponent(out BuildingPowerConfiguration config))
+            {
+                Add(config);
+            }
+        };
+        BuildingsGrid.OnBuildingRemoved -= (Building building) =>
+        {
+            if (building.TryGetComponent(out BuildingPowerConfiguration config))
+            {
+                Remove(config);
+            }
+        };
         for (int i = 0; i < _configs.Count; i++)
             _configs[i].DataChanged -= (PowerDevice device, PowerDeviceData data) => UpdateText();
     }

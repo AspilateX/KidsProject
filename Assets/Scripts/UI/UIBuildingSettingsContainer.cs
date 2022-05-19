@@ -31,16 +31,19 @@ public class UIBuildingSettingsContainer : UIContainer<BuildingRequest>
         {
             case BuildingRequestType.ChangeConfig:
                 {
+                    _button.onClick.RemoveAllListeners();
                     _button.onClick.AddListener(RequestPowerConfigurationMode);
                     break;
                 }
             case BuildingRequestType.CopyConfig:
                 {
+                    _button.onClick.RemoveAllListeners();
                     _button.onClick.AddListener(RequestCopyConfiguration);
                     break;
                 } 
             case BuildingRequestType.PasteConfig:
                 {
+                    _button.onClick.RemoveAllListeners();
                     if (BuildingConfigurationBuffer.Buffer == null)
                         _button.enabled = false;
                     else
@@ -52,6 +55,7 @@ public class UIBuildingSettingsContainer : UIContainer<BuildingRequest>
                 }
             case BuildingRequestType.RemoveBuilding:
                 {
+                    _button.onClick.RemoveAllListeners();
                     _button.onClick.AddListener(RequestDelete);
                     break;
                 }
@@ -76,7 +80,7 @@ public class UIBuildingSettingsContainer : UIContainer<BuildingRequest>
     private void RequestPasteConfiguration()
     {
         if (Content.Target.TryGetComponent(out BuildingPowerConfiguration config))
-            config.PowerDevicesData = BuildingConfigurationBuffer.Buffer.PowerDevicesData;
+            config.SetPowerDevicesData(BuildingConfigurationBuffer.Buffer.PowerDevicesData);
 
         BuildingPopup.Current.Hide();
 
@@ -104,19 +108,4 @@ public enum BuildingRequestType
     CopyConfig,
     PasteConfig,
     RemoveBuilding
-}
-
-public static class BuildingEventsHolder
-{
-    public static event Action<Building> OnBuildingPrefabChoosen;
-    public static event Action<Building> OnBuildingRemoving;
-
-    public static void ChooseBuildingPrefab(Building building)
-    {
-        OnBuildingPrefabChoosen?.Invoke(building);
-    }
-    public static void InvokeBuildingRemove(Building building)
-    {
-        OnBuildingRemoving?.Invoke(building);
-    }
 }

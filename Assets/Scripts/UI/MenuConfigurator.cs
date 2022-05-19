@@ -34,6 +34,8 @@ public class MenuConfigurator : MonoBehaviour
 
         _powerConfigurationExitButton.SetActive(true);
 
+        _globalConfigurationUI.enabled = false;
+        _powerConfigurationUI.enabled = true;
         _powerDevicesList.SetConfig(config);
         _powerConfigurationUI.SetConfig(config);
         _powerConfigurationUI.UpdateText();
@@ -49,7 +51,10 @@ public class MenuConfigurator : MonoBehaviour
         _centerHeaderText.text = BuildingCenterHeader;
 
         _powerConfigurationExitButton.SetActive(false);
-        _powerConfigurationUI.UpdateText();
+        
+        _powerConfigurationUI.enabled = false;
+        _globalConfigurationUI.enabled = true;
+        _globalConfigurationUI.UpdateText();
 
         _regionsList.OnRegionChanged += () => _globalConfigurationUI.UpdateText();
         _regionsList.OnRegionChanged -= () => _powerConfigurationUI.UpdateText();

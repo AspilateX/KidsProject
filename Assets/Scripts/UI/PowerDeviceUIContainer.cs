@@ -84,12 +84,16 @@ public class PowerDeviceUIContainer : UIContainer<PowerDevice>
     {
         _devicesAmountInputField.onEndEdit.AddListener((string text) => ApplyFields());
         _devicesAmountInputField.onSubmit.AddListener((string text) => ApplyFields());
+        _devicesHoursInputField.onSubmit.AddListener((string text) => ApplyFields());
+        _devicesHoursInputField.onSubmit.AddListener((string text) => ApplyFields());
     }
 
     private void OnDisable()
     {
         _devicesAmountInputField.onEndEdit.RemoveListener((string text) => ApplyFields());
         _devicesAmountInputField.onSubmit.RemoveListener((string text) => ApplyFields());
+        _devicesHoursInputField.onSubmit.RemoveListener((string text) => ApplyFields());
+        _devicesHoursInputField.onSubmit.RemoveListener((string text) => ApplyFields());
     }
 
 }

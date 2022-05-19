@@ -19,6 +19,10 @@ public class UIRegionsList : UIList<string>
     {
         base.UpdateList(content);
         Init();
+
+        Image img = Containers[lastSelectedContainerId]?.gameObject.GetComponent<Image>();
+        if (img != null)
+            img.color = new Color(0.203f, 0.596f, 0.858f);
     }
 
     private void OnEnable()

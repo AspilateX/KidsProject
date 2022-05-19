@@ -6,7 +6,7 @@ using UnityEngine;
 public class BuildingPowerConfiguration : MonoBehaviour
 {
     public event Action<PowerDevice, PowerDeviceData> DataChanged;
-    public Dictionary<PowerDevice, PowerDeviceData> PowerDevicesData { get; set; } = new Dictionary<PowerDevice, PowerDeviceData>();
+    public Dictionary<PowerDevice, PowerDeviceData> PowerDevicesData { get; private set; } = new Dictionary<PowerDevice, PowerDeviceData>();
 
     public float CurrentInventorPower 
     { 
@@ -83,7 +83,7 @@ public class BuildingPowerConfiguration : MonoBehaviour
     { 
         get
         {
-            return Mathf.Abs(TotalProductionPerHour) * UIRegionsList.CurrentRegionSunnyHours;
+            return TotalProductionPerHour * UIRegionsList.CurrentRegionSunnyHours;
         } 
     }
     public float TotalAnnualConsumption
@@ -118,6 +118,16 @@ public class BuildingPowerConfiguration : MonoBehaviour
         }
     }
 
+    public void SetPowerDevicesData(Dictionary<PowerDevice, PowerDeviceData> powerDevicesData)
+    {
+        PowerDevicesData = powerDevicesData;
+
+        foreach (var device in PowerDevicesData)
+            DataChanged?.Invoke(device.Key, device.Value);
+
+        if (PowerDevicesData.Count == 0)
+            DataChanged?.Invoke(new PowerDevice(), new PowerDeviceData(0, 0)); //Костыль, нет времени
+    }
     public PowerDeviceData GetPowerDeviceData(PowerDevice device)
     {
         if (PowerDevicesData.ContainsKey(device))

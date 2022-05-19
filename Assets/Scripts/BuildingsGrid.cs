@@ -7,7 +7,9 @@ using UnityEngine.EventSystems;
 
 public class BuildingsGrid : MonoBehaviour
 {
-    public static event Action OnBuildingRemoved;
+    public static event Action<Building> OnBuildingRemoved;
+    public static event Action<Building> OnBuildingPlaced;
+
     public Vector2Int GridSize = new Vector2Int (100,100);
     [SerializeField]
     private ParticleSystem _onPlacePS;
@@ -142,6 +144,9 @@ public class BuildingsGrid : MonoBehaviour
         CurrentBuildingInstance.SetNormal();
         CurrentBuildingInstance.ApplyPlacement();
         CurrentBuildingInstance.gameObject.layer = LayerMask.NameToLayer("Selectable");
+
+        OnBuildingPlaced?.Invoke(CurrentBuildingInstance);
+
         CurrentBuildingInstance = null;
 
         if (_lastPrefab != null)
@@ -159,7 +164,7 @@ public class BuildingsGrid : MonoBehaviour
         if (building == null) 
             return;
 
+        OnBuildingRemoved?.Invoke(building);
         Destroy(building.gameObject);
-        OnBuildingRemoved?.Invoke();
     }
 }
